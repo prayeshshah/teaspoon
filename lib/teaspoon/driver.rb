@@ -13,3 +13,4 @@ end
 Teaspoon::Driver.register(:phantomjs, "Teaspoon::Driver::Phantomjs", "teaspoon/driver/phantomjs", default: true)
 Teaspoon::Driver.register(:selenium, "Teaspoon::Driver::Selenium", "teaspoon/driver/selenium")
 Teaspoon::Driver.register(:browserstack, "Teaspoon::Driver::BrowserStack", "teaspoon/driver/browserstack")
+Teaspoon::Driver.register(:cuprite, "Teaspoon::Driver::Cuprite", "teaspoon/driver/cuprite")
