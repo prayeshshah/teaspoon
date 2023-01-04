@@ -16,26 +16,39 @@ module Teaspoon
       end
 
       def run_specs(runner, url)
-        driver = Capybara::Cuprite::Driver.new(nil, driver_options.to_options)
-
         driver.visit(url)
 
-        done = driver.evaluate_script("window.Teaspoon && window.Teaspoon.finished")
+        wait_for_specs_to_finish
+
         driver.evaluate_script("window.Teaspoon && window.Teaspoon.getMessages() || []").each do |line|
           runner.process("#{line}\n")
         end
-        done
       ensure
-        driver.quit if driver
+        driver.quit if @driver
       end
 
       protected
 
+        def driver
+          @driver ||= Capybara::Cuprite::Driver.new(nil, driver_options.to_options)
+        end
+
         def driver_options
           @driver_options ||= HashWithIndifferentAccess.new(
             timeout: Teaspoon.configuration.driver_timeout.to_i,
-            slowmo: 0.2,
           ).merge(@options)
+        end
+
+      private
+
+        def wait_for_specs_to_finish
+          until finished? do
+            sleep 0.5
+          end
+        end
+
+        def finished?
+          driver.evaluate_script("window.Teaspoon && window.Teaspoon.finished")
         end
     end
   end
