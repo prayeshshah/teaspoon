@@ -24,7 +24,7 @@ module Teaspoon
           runner.process("#{line}\n")
         end
       ensure
-        driver.quit if @driver
+        driver.quit
       end
 
       protected
